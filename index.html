@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PC Builder | เกมจำลองการประกอบคอมพิวเตอร์</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<div id="game"></div>
+<audio id="backgroundMusic" src="puzzle-loop-67641.mp3" preload="auto" loop></audio>
+
+<header id="top">
+ <div class="logo">PC BUILDER TECH ACADEMY</div>
+ <div class="mission-pill">🎯 ภารกิจ: ประกอบคอมเกมมิ่งให้ครบวงจร (งบแนะนำ ≤ 24,000 ฿)</div>
+ <div id="score">คะแนน: 0 | งบที่ใช้: 0 ฿</div>
+</header>
+
+<details id="hud" class="side-panel">
+ <summary>📦 คลังอุปกรณ์</summary>
+ <div class="panel-content">
+  <div class="tag">เลือกจากคลัง หรือเดินไปหยิบที่แท่นบนโต๊ะ</div>
+  <div id="inventory"></div>
+  <details class="help-details">
+   <summary>ปุ่มควบคุม</summary>
+   <div class="tag">WASD เดิน | Shift ปลดเมาส์ | คลิกขวาซูม | E หยิบ/ติดตั้ง | Q วาง | R ถอด | F ปรับแสง | 1–3 เลือกเครื่องมือ</div>
+  </details>
+ </div>
+</details>
+
+<details id="info" class="side-panel">
+ <summary>🔍 ข้อมูลและขั้นตอน</summary>
+ <div class="panel-content">
+  <div id="details">เลือกอุปกรณ์หรือเครื่องมือเพื่อดูสเปคและวิธีใช้งาน</div>
+  <hr>
+  <h3>📋 เช็กลิสต์การประกอบ</h3>
+  <div id="platformStatus" class="platform-status"></div>
+  <div id="progress"></div>
+ </div>
+</details>
+
+<div id="crosshair"></div>
+<div id="prompt">คลิกเริ่มเกมเพื่อเข้าสู่ห้องปฏิบัติการ</div>
+<div id="message" role="status" aria-live="polite" hidden></div>
+
+<div id="bottom">
+ <button class="tool-btn" id="btnPaste">[1] ทาซิลิโคน</button>
+ <button class="tool-btn" id="btnScrew">[2] ไขควง</button>
+ <button class="tool-btn" id="btnCable">[3] เดินสายไฟ</button>
+ <button class="cancel-btn" id="btnDrop">[Q] วางของที่ถือ</button>
+ <button id="btnPost">⚡ เปิดเครื่อง (POST)</button>
+ <button id="btnSettings">⚙️ ตั้งค่า</button>
+ <details id="moreActions">
+  <summary>เพิ่มเติม</summary>
+  <div class="more-actions">
+   <button class="light-btn active" id="btnLight">[F] ปรับแสง</button>
+   <button id="btnLabels" aria-pressed="false">🏷️ แสดงป้ายชื่อ</button>
+   <button class="stress-btn" id="btnStress">📊 Stress Test</button>
+   <button class="repair-btn" id="btnRepairChallenge">🧩 ระดับท้าทาย: ซ่อมเครื่องปริศนา</button>
+   <button class="danger" id="btnReset">🔄 รีเซ็ต</button>
+  </div>
+ </details>
+</div>
+
+<div id="start">
+ <div class="window start-window">
+  <p class="start-eyebrow">เกมจำลองการประกอบคอมพิวเตอร์</p>
+  <h1>พร้อมประกอบคอมเครื่องแรกหรือยัง?</h1>
+  <p class="start-lead">เลือกสเปกที่ต้องการ แล้วประกอบเครื่องให้เปิดติดด้วยตัวเอง</p>
+  <div class="start-mission">
+   <strong>ภารกิจเริ่มต้น</strong>
+   <p>เลือกอะไหล่ → ประกอบเครื่อง → ทดสอบการเปิดเครื่อง → เรียนรู้การติดตั้ง Windows</p>
+  </div>
+  <label class="platform-setting" for="platformSelect">เลือกสเปกเครื่องที่จะประกอบ</label>
+  <select id="platformSelect" class="platform-select">
+   <option value="intel-ddr4">เครื่อง Intel LGA1700 · DDR4</option>
+   <option value="amd-ddr4">เครื่อง AMD AM4 · DDR4</option>
+   <option value="intel-ddr5">เครื่อง Intel LGA1700 · DDR5</option>
+   <option value="legacy-ddr4">เครื่อง Intel LGA1151 · DDR4</option>
+  </select>
+  <p class="platform-hint tag">เลือกเครื่องให้ตรงกับอะไหล่ที่ต้องการ CPU, ชุดระบายความร้อน และ RAM ต่างสเปกจะใส่ไม่ได้</p>
+  <details class="intro-details">
+   <summary>ดูคำแนะนำการควบคุม</summary>
+   <p>WASD เดิน | Shift ปลดเมาส์เพื่อคลิกเมนู | คลิกฉากเพื่อกลับเข้าเกม | คลิกขวาซูม | E หยิบ/ติดตั้ง | Q วางของ | R ถอดชิ้นส่วน | F ปรับแสง | 1–3 เลือกเครื่องมือ</p>
+  </details>
+  <div class="start-actions">
+   <button class="start-btn" id="btnStart">เริ่มประกอบคอม</button>
+   <button id="btnSettingsStart" class="cancel-btn">ตั้งค่าเกม</button>
+  </div>
+ </div>
+</div>
+
+<div id="settingsScreen" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+ <div class="window settings-window">
+  <h1 id="settingsTitle">⚙️ ตั้งค่าเกม</h1>
+  <label class="volume-setting" for="volumeSlider">
+   <span>ระดับเสียงเกมและเพลง</span>
+   <output id="volumeValue" for="volumeSlider">100%</output>
+  </label>
+  <input id="volumeSlider" type="range" min="0" max="100" value="100">
+  <label class="platform-setting" for="settingsPlatformSelect">สเปกเครื่องที่กำลังประกอบ</label>
+  <select id="settingsPlatformSelect" class="platform-select">
+   <option value="intel-ddr4">เครื่อง Intel LGA1700 · DDR4</option>
+   <option value="amd-ddr4">เครื่อง AMD AM4 · DDR4</option>
+   <option value="intel-ddr5">เครื่อง Intel LGA1700 · DDR5</option>
+   <option value="legacy-ddr4">เครื่อง Intel LGA1151 · DDR4</option>
+  </select>
+  <p class="platform-hint tag">เปลี่ยนสเปกเครื่องระหว่างเล่นจะรีเซ็ตความคืบหน้าหลังยืนยัน</p>
+  <div id="settingsPlatformStatus" class="platform-status"></div>
+  <div id="settingsError" class="settings-error" role="alert" hidden></div>
+  <div class="settings-help-actions">
+   <button id="btnGameRules">📜 กติกาการเล่น</button>
+   <button id="btnGameBasics">🎮 วิธีเล่นเบื้องต้น</button>
+  </div>
+  <button id="fullscreenToggle">⛶ เข้าสู่โหมดเต็มจอ</button>
+  <button id="closeSettings" class="cancel-btn">ปิดหน้าต่างตั้งค่า</button>
+ </div>
+</div>
+
+<div id="helpScreen" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+ <div class="window help-window">
+  <h1 id="helpTitle">คำแนะนำการเล่น</h1>
+  <section id="gameRules" hidden>
+   <h2>📜 กติกาการเล่น</h2>
+   <ul>
+    <li>ประกอบคอมพิวเตอร์ให้ครบตามเช็กลิสต์ โดยติดตั้งอุปกรณ์ให้ตรงกับช่องและลำดับที่เหมาะสม</li>
+    <li>ทาซิลิโคนก่อนติดตั้งชุดระบายความร้อน ขันน็อตยึดอุปกรณ์ที่จำเป็น และเชื่อมต่อสายไฟให้ครบ</li>
+    <li>ตรวจสอบความเข้ากันได้และกำลังไฟของอุปกรณ์ก่อนกดเปิดเครื่อง (POST)</li>
+    <li>งบแนะนำของภารกิจคือไม่เกิน 24,000 บาท และทำแบบทดสอบติดตั้ง Windows หลัง POST ผ่านเพื่อรับคะแนนเพิ่ม</li>
+    <li>โหมดท้าทายให้วิเคราะห์อาการเครื่องติดแต่จอไม่ขึ้น แล้วเลือกตำแหน่งที่ต้องแก้ไข</li>
+   </ul>
+  </section>
+  <section id="gameBasics" hidden>
+   <h2>🎮 วิธีเล่นเบื้องต้น</h2>
+   <ol>
+    <li>กด “เข้าสู่ห้องปฏิบัติการ” แล้วคลิกฉากเพื่อควบคุมเมาส์</li>
+    <li>ใช้ WASD เดินและมองไปรอบ ๆ เล็งชิ้นส่วนบนโต๊ะแล้วกด E เพื่อหยิบหรือติดตั้ง</li>
+    <li>เลือกเครื่องมือด้วยปุ่ม 1–3: ทาซิลิโคน, ไขควง และเดินสายไฟ</li>
+    <li>กด Q เพื่อวางของที่ถือ, R เพื่อถอดชิ้นส่วน, F เพื่อปรับแสง และคลิกขวาเพื่อซูม</li>
+    <li>ดูเช็กลิสต์ด้านขวา เมื่อติดตั้งครบแล้วกด “เปิดเครื่อง (POST)” เพื่อตรวจสอบระบบ</li>
+    <li>กด Shift เพื่อปลดเมาส์และใช้งานเมนู จากนั้นคลิกฉากเพื่อกลับเข้าเกม</li>
+   </ol>
+  </section>
+  <button id="closeHelp" class="cancel-btn">กลับหน้าตั้งค่า</button>
+ </div>
+</div>
+
+<div id="postScreen">
+ <div class="window" id="postContent"></div>
+</div>
+
+<div id="stressScreen">
+ <div class="window" id="stressContent">
+  <h1 class="stress-title">3D BENCHMARK & THERMAL STRESS TEST</h1>
+  <p class="tag">จำลองการรันกราฟิก 3 มิติ 100% เพื่อทดสอบเสถียรภาพ อุณหภูมิ และเฟรมเรต</p>
+  <div id="stressLogs"></div>
+  <button id="closeStress" class="modal-action">ปิดหน้าต่างทดสอบ</button>
+ </div>
+</div>
+
+<div id="repairScreen" role="dialog" aria-modal="true" aria-labelledby="repairTitle">
+ <div class="window repair-window">
+  <h1 id="repairTitle">🧩 ระดับท้าทาย: เครื่องติดแต่จอไม่ขึ้น</h1>
+  <p>เครื่องปริศนาเปิดติด พัดลมหมุน แต่หน้าจอขึ้น “No Signal” ลองวิเคราะห์อาการแล้วเลือกจุดซ่อม</p>
+  <div class="repair-clues">
+   <p>• เครื่องใช้ Intel Core i5-12400F ซึ่งไม่มีกราฟิกในตัว</p>
+   <p>• มีการ์ดจอแยกติดตั้งและไฟเลี้ยงการ์ดจอครบ</p>
+   <p>• สายจอเสียบอยู่ที่พอร์ตภาพบนเมนบอร์ด</p>
+  </div>
+  <div class="repair-options">
+   <button data-repair-choice="gpu">ย้ายสาย HDMI/DisplayPort ไปเสียบที่การ์ดจอ</button>
+   <button data-repair-choice="ram">ถอด RAM ออกแล้วใส่กลับใหม่</button>
+   <button data-repair-choice="windows">ติดตั้ง Windows ใหม่จาก USB</button>
+   <button data-repair-choice="psu">เปลี่ยน PSU ให้มีกำลังวัตต์สูงขึ้น</button>
+  </div>
+  <div id="repairFeedback" class="repair-feedback" role="status" aria-live="polite"></div>
+  <button id="closeRepair" class="cancel-btn">กลับไปเล่น</button>
+ </div>
+</div>
+
+<div id="windowsScreen" role="dialog" aria-modal="true" aria-labelledby="windowsTitle">
+ <div class="window windows-window">
+  <div class="windows-heading">
+   <h1 id="windowsTitle">แบบทดสอบการติดตั้ง Windows</h1>
+   <span id="windowsStepCount" class="tag"></span>
+  </div>
+  <div class="bar-bg"><div id="windowsProgress" class="bar-fill"></div></div>
+  <h2 id="windowsStepTitle"></h2>
+  <p id="windowsStepDescription"></p>
+  <div id="windowsAnswers" class="windows-answers"></div>
+  <div id="windowsFeedback" class="windows-feedback" role="status" aria-live="polite"></div>
+  <div id="windowsStepTip" class="windows-tip"></div>
+  <div class="windows-actions">
+   <button id="btnWindowsBack" class="cancel-btn">ข้อก่อนหน้า</button>
+   <button id="btnWindowsNext">ข้อถัดไป</button>
+   <button id="btnWindowsClose" class="cancel-btn">ปิดแบบทดสอบ</button>
+  </div>
+ </div>
+</div>
+
+<div id="completionScreen" role="dialog" aria-modal="true" aria-labelledby="completionTitle">
+ <div class="window completion-window">
+  <h1 id="completionTitle">🎉 ยินดีด้วย! ประกอบคอมสำเร็จแล้ว</h1>
+  <p>เครื่องผ่านการทดสอบ POST และคุณทำภารกิจติดตั้ง Windows ครบแล้ว</p>
+  <p id="completionScore" class="completion-score"></p>
+  <p>ต้องการเล่นต่อในห้องประกอบ หรือกลับไปหน้าเริ่มต้น?</p>
+  <div class="completion-actions">
+   <button id="btnContinuePlaying">เล่นต่อ</button>
+   <button id="btnReturnToStart" class="cancel-btn">กลับหน้าเริ่มต้น</button>
+  </div>
+ </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
